@@ -1,19 +1,38 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addTodo } from '../Slicer/todoSlice'
+import { addTodo, updateTodo } from '../Slicer/todoSlice'
 
 
-function AddTodo() {
-
-    const dispatch = useDispatch()
+function AddTodo({ editabletodo ,  setEditabletodo }) {
 
     const [input, setInput] = useState("")
+    const dispatch = useDispatch()
 
+    useEffect(() => {
+      if(  editabletodo ){
+         setInput(editabletodo.text )
+      } else {
+          setInput("")
+      }
+    }, [editabletodo])
+    
     const addTodoHandler = (e)=>{
         e.preventDefault() 
-        dispatch( addTodo(input)) ; 
-        setInput("")
+
+        if (!input.trim()) return; 
+
+        if( editabletodo === null){
+          dispatch( addTodo(input)) ; 
+          setInput("")
+        } else {
+          const newtodo = { ...editabletodo , text : input }
+          dispatch( updateTodo( newtodo ) )
+          setEditabletodo(null)
+          setInput("")
+        }
+
+        
     }
 
   return (
@@ -26,10 +45,10 @@ function AddTodo() {
       onChange={(e) => setInput(e.target.value)}
     />
     <button
-      type="submit"
+      type="submit" value="edit"
       className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"
     >
-      Add Todo
+       {editabletodo ? 'Update Todo' : 'Add Todo'}
     </button>
   </form>
   )

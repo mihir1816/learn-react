@@ -6,13 +6,13 @@ import AddTodo from './Components/AddTodo'
 import TodoList from './Components/TodoList'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [editabletodo, setEditabletodo] = useState(null)
 
   return (
     <>
-
-    <AddTodo />
-    <TodoList />
+      
+    <AddTodo editabletodo= {editabletodo} setEditabletodo={setEditabletodo} />
+    <TodoList editabletodo= {editabletodo} setEditabletodo={setEditabletodo} />
 
     </>
   )

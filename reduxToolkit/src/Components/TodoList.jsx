@@ -2,10 +2,19 @@ import React from 'react'
 import { removeTodo , updateTodo } from '../Slicer/todoSlice'
 import { useDispatch , useSelector } from 'react-redux'
 
-export default function TodoList() {
+export default function TodoList({ editabletodo ,  setEditabletodo }) {
 
     const todos = useSelector( state => state.todos ) 
     const dispatch = useDispatch()
+
+    const removeselectedTodo = (todo)=>{
+      if( !editabletodo ) {
+        setEditabletodo(null)
+      }
+      dispatch(removeTodo(todo.id))
+    }
+
+    
 
   return (
     <>
@@ -13,12 +22,36 @@ export default function TodoList() {
     <ul className="list-none">
         {todos.map((todo) => (
           <li
-            className="mt-4 flex justify-between items-center bg-zinc-800 px-4 py-2 rounded"
-            key={todo.id}
-          >
-            <div className='text-white'>{todo.text}</div>
+          className="mt-4 flex justify-between items-center bg-zinc-800 px-4 py-2 rounded"
+          key={todo.id}
+        >
+          <div className="text-white">{todo.text}</div>
+
+          <div className="flex space-x-2 ml-auto">  
             <button
-             onClick={() => dispatch(removeTodo(todo.id))}
+              onClick={()=>(setEditabletodo(todo))}
+              className="text-white bg-blue-500 border-0 py-1 px-4 focus:outline-none hover:bg-blue-600 rounded text-md"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M11.25 3.75l-7.5 7.5m0 0L9 20.25m-5.25-9.75l8.25-8.25m8.25 8.25L12 20.25m8.25-8.25L14.25 4.5m-8.25 8.25l7.5-7.5"
+                />
+              </svg>
+            </button>
+        
+            <button
+              onClick={() => (
+                removeselectedTodo(todo)
+              )}
               className="text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-red-600 rounded text-md"
             >
               <svg
@@ -36,7 +69,8 @@ export default function TodoList() {
                 />
               </svg>
             </button>
-          </li>
+          </div>
+        </li>
         ))}
       </ul>
     </>
