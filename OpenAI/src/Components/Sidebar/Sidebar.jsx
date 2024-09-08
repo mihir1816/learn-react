@@ -7,6 +7,7 @@ function Sidebar() {
   const [extended, setExtended] = useState(true);
   const [input_prompt, setInput_prompt] = useState(""); // State for input prompt
   const [display_info, setDisplay_info] = useState(""); // State for display info
+  const [display_prompt, setdisplay_prompt] = useState("")
 
   // Toggle sidebar extension
   const handleClick = () => {
@@ -45,7 +46,8 @@ function Sidebar() {
                 {history.map((eachSearch, index) => (
                   <div 
                   onClick={(e)=>(
-                    setDisplay_info(eachSearch.response)
+                    setDisplay_info(eachSearch.response) , 
+                    setdisplay_prompt(eachSearch.prompt)
                   )}
                   key={index} 
                   className={`truncate overflow-hidden whitespace-nowrap text-ellipsis pl-5 pt-2 pb-2  w-56 rounded-lg ${index % 2 == 0 ? 'bg-gray-100' : null }`}>{eachSearch.prompt}</div>
@@ -81,6 +83,8 @@ function Sidebar() {
         setInput_prompt={setInput_prompt} 
         display_info={display_info} 
         setDisplay_info={setDisplay_info}
+        display_prompt={display_prompt}
+        setdisplay_prompt={setdisplay_prompt}
       />
     </div>
   );
